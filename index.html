@@ -392,7 +392,7 @@
     <button id="music-btn" title="Música" onclick="toggleMusic()">🎵</button>
 
     <!-- Audio — poné tu MP3 en la misma carpeta y cambiá el src -->
-    <audio id="bg-music" loop src="mp3/intro.mp3" preload="auto"></audio>
+    <audio id="bg-music" preload="auto"></audio>
 
     <div class="main-wrap">
         <div class="container py-4" style="max-width:880px;">
@@ -512,6 +512,25 @@
         const audio = document.getElementById('bg-music');
         audio.volume = 0.35;
         let musicStarted = false;
+
+        intro = 'mp3/intro.mp3';
+        enredados = 'mp3/enredados.mp3';
+
+        const PLAYLIST = [intro, enredados];
+        let currentTrack = 0;
+
+        function loadTrack(index) {
+            audio.src = PLAYLIST[index];
+            audio.load();
+        }
+
+        audio.addEventListener('ended', () => {
+            currentTrack = (currentTrack + 1) % PLAYLIST.length;
+            loadTrack(currentTrack);
+            audio.play();
+        });
+
+        loadTrack(0);
 
         function tryAutoplay() {
             audio.play().then(() => {
