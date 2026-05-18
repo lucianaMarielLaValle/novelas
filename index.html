@@ -6,95 +6,178 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Disney Novelas Inolvidables 🏰</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@300;400&display=swap"
+        rel="stylesheet" />
     <style>
+        :root {
+            --gold: #C9933A;
+            --gold-light: #F0C97A;
+            --dark: #0f0c1a;
+            --card: #1a1628;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background-color: #0f0c1a;
+            background-color: var(--dark);
             color: #f0ece8;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        /* Estrellas de fondo */
+        #stars-bg {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star-bg {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--d) ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            from {
+                opacity: 0.1;
+                transform: scale(1);
+            }
+
+            to {
+                opacity: 0.7;
+                transform: scale(1.4);
+            }
+        }
+
+        .main-wrap {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header-section {
+            text-align: center;
+            padding: 2.5rem 1rem 1.5rem;
+        }
+
+        .castle {
+            font-size: 3rem;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(201, 147, 58, 0.6));
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            color: #F0C97A;
+            font-size: clamp(1.6rem, 5vw, 2.4rem);
+            color: var(--gold-light);
+            margin: 0.5rem 0 0.25rem;
         }
 
-        .book-card {
-            cursor: pointer;
-            transition: border-color 0.15s, background-color 0.15s;
-            background-color: #1a1628;
-            border: 1px solid rgba(201, 147, 58, 0.2);
+        .subtitle {
+            color: #9b95a3;
+            font-size: 0.85rem;
         }
 
-        .book-card:hover {
-            border-color: rgba(201, 147, 58, 0.6);
-        }
-
-        .book-card.comprado {
-            background-color: rgba(58, 158, 110, 0.12);
-            border-color: rgba(78, 201, 138, 0.5);
-        }
-
-        .book-card.comprado .book-title {
-            color: #4ec98a;
-        }
-
-        .check-circle {
-            width: 20px;
-            height: 20px;
+        /* Botón música */
+        #music-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 100;
+            background: rgba(26, 22, 40, 0.85);
+            border: 1px solid rgba(201, 147, 58, 0.3);
             border-radius: 50%;
-            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            width: 42px;
+            height: 42px;
+            font-size: 1.2rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            transition: border-color 0.2s, transform 0.2s;
+            backdrop-filter: blur(6px);
         }
 
-        .book-card.comprado .check-circle {
-            background: #3a9e6e;
-            border-color: #3a9e6e;
+        #music-btn:hover {
+            border-color: var(--gold);
+            transform: scale(1.1);
         }
 
-        .progress {
-            background-color: rgba(255, 255, 255, 0.08);
+        #music-btn.playing {
+            border-color: var(--gold);
+            animation: pulse-btn 1.5s ease-in-out infinite;
         }
 
-        .progress-bar {
-            background: linear-gradient(90deg, #C9933A, #F0C97A);
+        @keyframes pulse-btn {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(201, 147, 58, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(201, 147, 58, 0);
+            }
         }
 
-        .filter-btn.active {
-            background-color: #C9933A !important;
-            border-color: #C9933A !important;
-            color: #0f0c1a !important;
-        }
-
-        input.form-control {
-            background-color: #1a1628;
-            border-color: rgba(201, 147, 58, 0.3);
-            color: #f0ece8;
-        }
-
-        input.form-control::placeholder {
-            color: #9b95a3;
-        }
-
-        input.form-control:focus {
-            background-color: #1a1628;
-            border-color: #C9933A;
-            color: #f0ece8;
-            box-shadow: none;
-        }
-
+        /* Stats */
         .stat-card {
-            background-color: #1a1628;
+            background: var(--card);
             border: 1px solid rgba(201, 147, 58, 0.2);
             border-radius: 12px;
+            padding: 14px 22px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(201, 147, 58, 0.5);
         }
 
         .stat-num {
             font-family: 'Playfair Display', serif;
             font-size: 2rem;
-            color: #F0C97A;
+            color: var(--gold-light);
+            transition: transform 0.2s;
+        }
+
+        .stat-num.bump {
+            animation: bump 0.3s ease;
+        }
+
+        @keyframes bump {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
         }
 
         .stat-label {
@@ -104,94 +187,278 @@
             color: #9b95a3;
         }
 
-        .toast-container {
-            position: fixed;
-            bottom: 1.5rem;
-            left: 50%;
-            transform: translateX(-50%);
+        /* Progress */
+        .progress {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 99px;
         }
 
-        .toast {
-            background-color: #1a1628;
-            border: 1px solid rgba(201, 147, 58, 0.3);
+        .progress-bar {
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            border-radius: 99px;
+            transition: width 0.5s ease;
+        }
+
+        /* Controles */
+        input.form-control {
+            background: var(--card);
+            border-color: rgba(201, 147, 58, 0.3);
             color: #f0ece8;
+            border-radius: 99px;
         }
 
-        .book-num {
+        input.form-control::placeholder {
             color: #9b95a3;
-            font-size: 0.72rem;
-            min-width: 20px;
+        }
+
+        input.form-control:focus {
+            background: var(--card);
+            border-color: var(--gold);
+            color: #f0ece8;
+            box-shadow: none;
         }
 
         .btn-outline-secondary {
             border-color: rgba(201, 147, 58, 0.3);
             color: #9b95a3;
+            border-radius: 99px;
         }
 
         .btn-outline-secondary:hover {
-            background-color: rgba(201, 147, 58, 0.1);
-            border-color: #C9933A;
-            color: #F0C97A;
+            background: rgba(201, 147, 58, 0.1);
+            border-color: var(--gold);
+            color: var(--gold-light);
+        }
+
+        .filter-btn.active {
+            background: var(--gold) !important;
+            border-color: var(--gold) !important;
+            color: #0f0c1a !important;
+            font-weight: 500;
+        }
+
+        /* Cards */
+        .book-card {
+            cursor: pointer;
+            background: var(--card);
+            border: 1px solid rgba(201, 147, 58, 0.15);
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            transition: border-color 0.2s, background 0.3s, transform 0.15s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-card:hover {
+            border-color: rgba(201, 147, 58, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .book-card.comprado {
+            background: rgba(58, 158, 110, 0.1);
+            border-color: rgba(78, 201, 138, 0.45);
+        }
+
+        .book-card.comprado .book-title {
+            color: #4ec98a;
+        }
+
+        /* Shimmer al tildar */
+        .book-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%);
+            transform: translateX(-100%);
+            pointer-events: none;
+        }
+
+        .book-card.shimmer::after {
+            animation: shimmer 0.5s ease forwards;
+        }
+
+        @keyframes shimmer {
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        .book-num {
+            color: #9b95a3;
+            font-size: 0.7rem;
+            min-width: 18px;
+            padding-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .book-title {
+            font-size: 0.8rem;
+            line-height: 1.45;
+            flex: 1;
+            transition: color 0.3s;
+        }
+
+        .check-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+            transition: background 0.3s, border-color 0.3s, transform 0.2s;
+        }
+
+        .book-card.comprado .check-circle {
+            background: #3a9e6e;
+            border-color: #3a9e6e;
+            transform: scale(1.1);
+        }
+
+        .check-circle svg {
+            display: none;
+        }
+
+        .book-card.comprado .check-circle svg {
+            display: block;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 200;
+        }
+
+        .toast {
+            background: var(--card);
+            border: 1px solid rgba(201, 147, 58, 0.3);
+            color: #f0ece8;
+        }
+
+        /* Loading */
+        #loading {
+            position: fixed;
+            inset: 0;
+            background: var(--dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            gap: 1rem;
+        }
+
+        .spinner-border {
+            color: var(--gold);
+        }
+
+        #loading p {
+            color: #9b95a3;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        /* Partículas */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 1rem;
+            animation: particle-fly var(--dur) ease forwards;
+        }
+
+        @keyframes particle-fly {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .empty {
+            color: #9b95a3;
+            text-align: center;
+            padding: 2rem;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container py-4" style="max-width: 860px;">
+    <!-- Fondo de estrellas -->
+    <div id="stars-bg"></div>
 
-        <!-- Header -->
-        <div class="text-center mb-4">
-            <div style="font-size:2.5rem">🏰</div>
-            <h1 class="fs-2 mb-1">Disney Novelas Inolvidables</h1>
-            <p class="text-secondary small">Colección completa · 72 títulos</p>
-        </div>
+    <!-- Botón música -->
+    <button id="music-btn" title="Música Disney" onclick="toggleMusic()">🎵</button>
 
-        <!-- Stats -->
-        <div class="row g-3 justify-content-center mb-3">
-            <div class="col-auto">
-                <div class="stat-card px-4 py-3 text-center">
-                    <div class="stat-num" id="stat-comprados">0</div>
-                    <div class="stat-label">comprados</div>
+    <div class="main-wrap">
+        <div class="container py-4" style="max-width:880px;">
+
+            <!-- Header -->
+            <div class="header-section">
+                <span class="castle">🏰</span>
+                <h1>Disney Novelas Inolvidables</h1>
+                <p class="subtitle">Colección completa · 72 títulos</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="row g-3 justify-content-center mb-3">
+                <div class="col-auto">
+                    <div class="stat-card">
+                        <div class="stat-num" id="stat-comprados">0</div>
+                        <div class="stat-label">comprados</div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="stat-card">
+                        <div class="stat-num" id="stat-faltan">72</div>
+                        <div class="stat-label">faltan</div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="stat-card">
+                        <div class="stat-num" id="stat-pct">0%</div>
+                        <div class="stat-label">completa</div>
+                    </div>
                 </div>
             </div>
-            <div class="col-auto">
-                <div class="stat-card px-4 py-3 text-center">
-                    <div class="stat-num" id="stat-faltan">72</div>
-                    <div class="stat-label">faltan</div>
-                </div>
+
+            <!-- Progress -->
+            <div class="progress mb-4" style="height:6px;">
+                <div class="progress-bar" id="progress-fill" style="width:0%;"></div>
             </div>
-            <div class="col-auto">
-                <div class="stat-card px-4 py-3 text-center">
-                    <div class="stat-num" id="stat-pct">0%</div>
-                    <div class="stat-label">completa</div>
-                </div>
+
+            <!-- Controles -->
+            <div class="d-flex gap-2 flex-wrap mb-4">
+                <input type="text" id="search" class="form-control" placeholder="🔍  Buscar película..."
+                    oninput="render()" style="max-width:260px;" />
+                <button class="btn btn-outline-secondary btn-sm filter-btn active"
+                    onclick="setFilter('todos',this)">Todos</button>
+                <button class="btn btn-outline-secondary btn-sm filter-btn" onclick="setFilter('comprados',this)">✓
+                    Comprados</button>
+                <button class="btn btn-outline-secondary btn-sm filter-btn"
+                    onclick="setFilter('faltan',this)">Faltan</button>
             </div>
+
+            <!-- Grid -->
+            <div class="row g-2" id="grid"></div>
+
         </div>
-
-        <!-- Progress bar -->
-        <div class="progress mb-4" style="height:6px; border-radius:99px;">
-            <div class="progress-bar" id="progress-fill" style="width:0%; border-radius:99px;"></div>
-        </div>
-
-        <!-- Controles -->
-        <div class="d-flex gap-2 flex-wrap mb-4">
-            <input type="text" id="search" class="form-control" placeholder="Buscar película..." oninput="render()"
-                style="max-width:260px;" />
-            <button class="btn btn-outline-secondary btn-sm filter-btn active"
-                onclick="setFilter('todos',this)">Todos</button>
-            <button class="btn btn-outline-secondary btn-sm filter-btn" onclick="setFilter('comprados',this)">✓
-                Comprados</button>
-            <button class="btn btn-outline-secondary btn-sm filter-btn"
-                onclick="setFilter('faltan',this)">Faltan</button>
-        </div>
-
-        <!-- Grid de libros -->
-        <div class="row g-2" id="grid"></div>
-
     </div>
 
-    <!-- Toast de estado -->
+    <!-- Toast -->
     <div class="toast-container">
         <div id="toast" class="toast align-items-center border-0" role="alert">
             <div class="d-flex">
@@ -200,16 +467,16 @@
         </div>
     </div>
 
-    <!-- Loading overlay -->
-    <div id="loading" class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-        style="background:#0f0c1a; z-index:999;">
-        <div class="spinner-border" style="color:#C9933A;" role="status"></div>
+    <!-- Loading -->
+    <div id="loading">
+        <div class="spinner-border" role="status"></div>
+        <p>Cargando la colección...</p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Audio: melodía de Disney usando Web Audio API (sin copyright) -->
     <script>
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  CONFIGURACIÓN — reemplazá estos dos valores
+        //  CONFIGURACIÓN
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         const SUPABASE_URL = 'https://bakrvqetpzqtvthqrjcb.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJha3J2cWV0cHpxdHZ0aHFyamNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxNDQyNDAsImV4cCI6MjA5NDcyMDI0MH0.EUu0KKVhto9VvPvL2BFn2q9AWlKrfgtWn5S6Vc2QQBQ';
@@ -234,6 +501,8 @@
             "Los rescatadores en cangurolandia"
         ];
 
+        const EMOJIS = ['✨', '⭐', '🌟', '💫', '🌠', '🏰', '🪄'];
+
         const API_HEADERS = {
             'Content-Type': 'application/json',
             'apikey': SUPABASE_ANON_KEY,
@@ -246,12 +515,113 @@
         let saveTimer = null;
         let toastEl = null;
 
+        // ── Estrellas de fondo ──
+        function createStars() {
+            const bg = document.getElementById('stars-bg');
+            for (let i = 0; i < 80; i++) {
+                const s = document.createElement('div');
+                s.className = 'star-bg';
+                const size = Math.random() * 2 + 1;
+                s.style.cssText = `
+        width:${size}px; height:${size}px;
+      top:${Math.random() * 100}%;
+      left:${Math.random() * 100}%;
+      --d:${2 + Math.random() * 4}s;
+      animation-delay:${Math.random() * 4}s;
+    `;
+                bg.appendChild(s);
+            }
+        }
+        createStars();
+
+        // ── Música con Web Audio API ──
+        let audioCtx = null;
+        let musicPlaying = false;
+        let musicNodes = [];
+
+        const MELODY = [
+            // Una melodía simple y mágica, inspiración etérea
+            [523, 0.3], [587, 0.3], [659, 0.3], [698, 0.3],
+            [784, 0.6], [698, 0.3], [659, 0.3], [587, 0.6],
+            [523, 0.3], [587, 0.3], [659, 0.3], [784, 0.3],
+            [880, 0.6], [784, 0.3], [698, 0.3], [659, 0.6],
+            [523, 0.3], [659, 0.3], [784, 0.3], [880, 0.3],
+            [1047, 0.9], [880, 0.3], [784, 0.3], [698, 0.3], [659, 0.6],
+        ];
+
+        function playMelody(ctx) {
+            let t = ctx.currentTime + 0.1;
+            const gain = ctx.createGain();
+            gain.gain.setValueAtTime(0.08, ctx.currentTime);
+            gain.connect(ctx.destination);
+            musicNodes.push(gain);
+
+            function scheduleLoop() {
+                MELODY.forEach(([freq, dur]) => {
+                    const osc = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, t);
+                    g.gain.setValueAtTime(0, t);
+                    g.gain.linearRampToValueAtTime(0.08, t + 0.05);
+                    g.gain.linearRampToValueAtTime(0, t + dur - 0.05);
+                    osc.connect(g);
+                    g.connect(gain);
+                    osc.start(t);
+                    osc.stop(t + dur);
+                    musicNodes.push(osc);
+                    t += dur;
+                });
+                // loop
+                if (musicPlaying) setTimeout(scheduleLoop, (t - ctx.currentTime - 0.5) * 1000);
+            }
+            scheduleLoop();
+        }
+
+        function toggleMusic() {
+            const btn = document.getElementById('music-btn');
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (!musicPlaying) {
+                musicPlaying = true;
+                btn.textContent = '🔊';
+                btn.classList.add('playing');
+                playMelody(audioCtx);
+            } else {
+                musicPlaying = false;
+                btn.textContent = '🎵';
+                btn.classList.remove('playing');
+                musicNodes.forEach(n => { try { n.disconnect(); } catch (e) { } });
+                musicNodes = [];
+            }
+        }
+
+        // ── Partículas al tildar ──
+        function spawnParticles(x, y) {
+            for (let i = 0; i < 8; i++) {
+                const el = document.createElement('div');
+                el.className = 'particle';
+                el.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+                const angle = (Math.PI * 2 * i) / 8 + (Math.random() - 0.5) * 0.5;
+                const dist = 60 + Math.random() * 60;
+                el.style.cssText = `
+        left:${x}px; top:${y}px;
+      --tx:${Math.cos(angle) * dist}px;
+      --ty:${Math.sin(angle) * dist - 40}px;
+      --dur:${0.6 + Math.random() * 0.4}s;
+      animation-delay:${Math.random() * 0.1}s;
+    `;
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 1200);
+            }
+        }
+
+        // ── Supabase ──
         async function loadState() {
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/coleccion?id=eq.1&select=comprados`, { headers: API_HEADERS });
                 const data = await res.json();
                 if (data?.[0]?.comprados) comprados = new Set(data[0].comprados);
-            } catch(e) {
+            } catch (e) {
                 showToast('⚠️ No se pudo conectar');
             } finally {
                 document.getElementById('loading').remove();
@@ -277,6 +647,7 @@
             saveTimer = setTimeout(saveState, 600);
         }
 
+        // ── UI ──
         function setFilter(f, btn) {
             filtro = f;
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -287,6 +658,12 @@
         function updateStats() {
             const c = comprados.size;
             const pct = Math.round(c / LIBROS.length * 100);
+            ['stat-comprados', 'stat-faltan', 'stat-pct'].forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.remove('bump');
+                void el.offsetWidth;
+                el.classList.add('bump');
+            });
             document.getElementById('stat-comprados').textContent = c;
             document.getElementById('stat-faltan').textContent = LIBROS.length - c;
             document.getElementById('stat-pct').textContent = pct + '%';
@@ -309,16 +686,38 @@
                 const col = document.createElement('div');
                 col.className = 'col-6 col-sm-4 col-md-3';
                 col.innerHTML = `
-                    <div class="book-card rounded-3 p-3 h-100 d-flex align-items-start gap-2 ${esCom ? 'comprado' : ''}">
-                    <span class="book-num pt-1">${i + 1}</span>
-                    <span class="book-title flex-grow-1" style="font-size:0.8rem; line-height:1.45;">${titulo}</span>
-                    <div class="check-circle mt-1">
+                    <div class="book-card${esCom ? ' comprado' : ''}">
+                        <span class="book-num pt-1">${i + 1}</span>
+                        <span class="book-title flex-grow-1">${titulo}</span>
+                        <div class="check-circle">
                         ${esCom ? `<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ''}
-                    </div>
+                        </div>
                     </div>`;
-                col.querySelector('.book-card').onclick = () => {
-                    if (comprados.has(i)) comprados.delete(i);
-                    else comprados.add(i);
+
+                col.querySelector('.book-card').onclick = (e) => {
+                    const adding = !comprados.has(i);
+                    if (adding) {
+                        comprados.add(i);
+                        spawnParticles(e.clientX, e.clientY);
+                        // Sonido de tildar
+                        if (audioCtx) {
+                            const osc = audioCtx.createOscillator();
+                            const g = audioCtx.createGain();
+                            osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                            osc.frequency.exponentialRampToValueAtTime(1320, audioCtx.currentTime + 0.15);
+                            g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                            osc.connect(g); g.connect(audioCtx.destination);
+                            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+                        }
+                    } else {
+                        comprados.delete(i);
+                    }
+                    // Shimmer
+                    const card = col.querySelector('.book-card');
+                    card.classList.add('shimmer');
+                    setTimeout(() => card.classList.remove('shimmer'), 500);
+
                     updateStats();
                     render();
                     debouncedSave();
@@ -327,7 +726,7 @@
             });
 
             if (visible === 0) {
-                grid.innerHTML = '<div class="col text-center text-secondary py-4">No hay resultados</div>';
+                grid.innerHTML = '<div class="col"><p class="empty">No hay resultados</p></div>';
             }
             updateStats();
         }
@@ -340,6 +739,7 @@
 
         loadState();
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
