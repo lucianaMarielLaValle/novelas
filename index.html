@@ -254,7 +254,7 @@
             } catch(e) {
                 showToast('⚠️ No se pudo conectar');
             } finally {
-                document.getElementById('loading').style.display = 'none';
+                document.getElementById('loading').remove();
             }
             render();
         }
